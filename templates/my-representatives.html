@@ -6,7 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>My state: {{ .Abbreviation }}</h1>
-    
+    <a href="/">Back to Search</a>
+    <h1>My state: {{ (index . 0).State }}</h1>
+    <ul>
+     {{ range . }}   
+        <li>{{ .LastName }}</li>
+     {{ end }}
+    </ul>
 </body>
 </html>
