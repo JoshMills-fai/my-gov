@@ -121,17 +121,28 @@ func getMembers(c *gin.Context) {
 
 }
 
-func Home(c *gin.Context) {
+func home(c *gin.Context) {
 	var tmpl *template.Template
 	tmpl = template.Must(template.ParseFiles("templates/index.html"))
+	tmpl.Execute(c.Writer, nil)
+}
+
+func handleFormSubmit(c *gin.Context) {
+	var tmpl *template.Template
+	tmpl = template.Must(template.ParseFiles("templates/submitform.html"))
+
+	c.Request.ParseForm()
+	fmt.Println(c.Request.Form.Get("email"))
+
 	tmpl.Execute(c.Writer, nil)
 }
 
 func main() {
 
 	router := gin.Default()
-	router.GET("/", Home)
+	router.GET("/", home)
 	router.GET("/api/members", getMembers)
+	router.POST("/submit", handleFormSubmit)
 	router.Run(":3000")
 
 }
