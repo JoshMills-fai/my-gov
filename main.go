@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -120,9 +121,16 @@ func getMembers(c *gin.Context) {
 
 }
 
+func Home(c *gin.Context) {
+	var tmpl *template.Template
+	tmpl = template.Must(template.ParseFiles("templates/index.html"))
+	tmpl.Execute(c.Writer, nil)
+}
+
 func main() {
 
 	router := gin.Default()
+	router.GET("/", Home)
 	router.GET("/api/members", getMembers)
 	router.Run(":3000")
 
