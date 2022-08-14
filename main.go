@@ -85,6 +85,12 @@ type Members struct {
 	} `json:"results"`
 }
 
+type State struct {
+	Abbreviation string
+}
+
+var members Members
+
 func GetJson(url string) []byte {
 
 	client := &http.Client{Timeout: 10 * time.Second}
@@ -105,7 +111,6 @@ func GetJson(url string) []byte {
 }
 
 func getMembers(c *gin.Context) {
-	var members Members
 
 	// return []byte
 	dataBytes := GetJson("https://api.propublica.org/congress/v1/116/senate/members.json")
@@ -128,13 +133,20 @@ func home(c *gin.Context) {
 }
 
 func handleFormSubmit(c *gin.Context) {
+
 	var tmpl *template.Template
-	tmpl = template.Must(template.ParseFiles("templates/submitform.html"))
+	tmpl = template.Must(template.ParseFiles("templates/my-representatives.html"))
 
 	c.Request.ParseForm()
-	fmt.Println(c.Request.Form.Get("email"))
+	var state State = State{c.Request.Form.Get("state")}
 
-	tmpl.Execute(c.Writer, nil)
+	if len(state.Abbreviation) == 0 {
+		fmt.Println("no state")
+		c.Redirect(301, "/")
+	} else {
+		tmpl.Execute(c.Writer, state)
+	}
+
 }
 
 func main() {
@@ -142,7 +154,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/", home)
 	router.GET("/api/members", getMembers)
-	router.POST("/submit", handleFormSubmit)
+	router.POST("/my-representatives", handleFormSubmit)
 	router.Run(":3000")
 
 }
