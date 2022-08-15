@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,7 @@ func getKey() string {
 	return key
 }
 
+// /////////////// TODO move types to different package
 type Members struct {
 	Status    string `json:"status"`
 	Copyright string `json:"copyright"`
@@ -117,7 +119,7 @@ func GetJson(url string) []byte {
 // ///////////////////////////////TODO differentiate between calling external api and ours
 func getMembers(c *gin.Context) {
 
-	// return []byte
+	///////////////////////////////////// TODO call this API maybe once a day, and set a cookie or storage item
 	dataBytes := GetJson("https://api.propublica.org/congress/v1/116/senate/members.json")
 
 	// convert JSON to struct
@@ -131,6 +133,7 @@ func getMembers(c *gin.Context) {
 }
 
 func home(c *gin.Context) {
+	////////////////////////// TODO get data from states.json to create a select instead of an input
 	var tmpl *template.Template
 	tmpl = template.Must(template.ParseFiles("templates/index.html"))
 	tmpl.Execute(c.Writer, nil)
@@ -149,7 +152,7 @@ func myRepresentatives(c *gin.Context) {
 
 	c.Request.ParseForm()
 
-	var UserState MyState = MyState{c.Request.Form.Get("state")}
+	var UserState MyState = MyState{strings.ToUpper(c.Request.Form.Get("state"))}
 
 	if len(UserState.Abbreviation) == 0 {
 		fmt.Println("no state")
