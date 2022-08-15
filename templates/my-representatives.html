@@ -11,25 +11,26 @@
     <h1>My state: {{ (index . 0).State }}</h1>
     <ul>
      {{ range . }}   
-        <li>
+        <li class="{{ .Party }}">
             <h2>{{ .FirstName }}  {{ .LastName }} {{ if .Suffix }}{{ .Suffix }}{{ end }} - {{ .Party }}</h2>
             <a href="https://twitter.com/{{ .TwitterAccount }}" target="_blank">Twitter Account</a>
             <a href="{{ .URL }}" target="_blank">Website</a>
             <p>Total Votes: <span>{{ .TotalVotes }}</span></p>
             <p>Missed Votes: <span>{{ .MissedVotes }}</span></p>
             <div class="percentage">
-                <p>Missed Vote %: <span>{{ .MissedVotesPct }}</span></p><div class="meter"></div>
+                <p>Missed Vote %: <span>{{ .MissedVotesPct }}</span></p><div class="meter"><div class="inner" data-pct="{{ .MissedVotesPct }}"></div></div>
             </div>
             <div class="percentage">
-                <p>Votes With Party: <span>{{ .VotesWithPartyPct }}</span></p><div class="meter"></div>
+                <p>Votes With Party: <span>{{ .VotesWithPartyPct }}</span></p><div class="meter"><div class="inner" data-pct="{{ .VotesWithPartyPct }}"></div></div>
             </div>
             <div class="percentage">
-                <p>Votes Against Party: <span>{{ .VotesAgainstPartyPct }}</span></p><div class="meter"></div>
+                <p>Votes Against Party: <span>{{ .VotesAgainstPartyPct }}</span></p><div class="meter"><div class="inner" data-pct="{{ .VotesAgainstPartyPct }}"></div></div>
             </div>
 
             <a href="{{ .ContactForm }}" target="_blank">Contact {{ .FirstName }} {{ .LastName }}</a>
         </li>
      {{ end }}
     </ul>
+    <script src="./../static/app.js"></script>
 </body>
 </html>
