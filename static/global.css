@@ -1,3 +1,34 @@
-body {
+html {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 16px;
+}
+
+ul li.D .inner {
+    background-color: blue;
+}
+
+ul li.R .inner {
+    background-color: red;
+}
+
+.percentage {
+    display: flex;
+    align-items: center;
+    
+    margin-bottom: 0.5rem;
+}
+
+.percentage > *  {
+    width: 50%;
+}
+
+.meter {
+    position: relative;
+    display: flex;
+    background-color: #dadada;
+    height: 0.5rem;
+}
+
+.meter .inner {
+    
 }
