@@ -137,6 +137,11 @@ func home(c *gin.Context) {
 }
 
 func myRepresentatives(c *gin.Context) {
+	if len(UserState.Abbreviation) == 0 {
+		fmt.Println("no state")
+		c.Redirect(301, "/")
+	}
+
 	//Consume from our own API
 	////////////////////////////////////////////////Todo, make this url dynamic
 	res, _ := http.Get("http://localhost:3000/api/members")
@@ -149,23 +154,15 @@ func myRepresentatives(c *gin.Context) {
 
 	c.Request.ParseForm()
 
-	var UserState MyState = MyState{c.Request.Form.Get("state")}
-
-	if len(UserState.Abbreviation) == 0 {
-		fmt.Println("no state")
-		c.Redirect(301, "/")
-	} else {
-
-		var memberMatch []Memberslist
-		//filter by user state
-		for _, member := range mymembers.Results[0].Memberslist {
-			if member.State == UserState.Abbreviation {
-				memberMatch = append(memberMatch, member)
-			}
+	var memberMatch []Memberslist
+	//filter by user state
+	for _, member := range mymembers.Results[0].Memberslist {
+		if member.State == UserState.Abbreviation {
+			memberMatch = append(memberMatch, member)
 		}
-
-		tmpl.Execute(c.Writer, memberMatch)
 	}
+
+	tmpl.Execute(c.Writer, memberMatch)
 
 }
 
