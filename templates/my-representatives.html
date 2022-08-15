@@ -4,13 +4,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./../static/global.css">
 </head>
 <body>
     <a href="/">Back to Search</a>
     <h1>My state: {{ (index . 0).State }}</h1>
     <ul>
      {{ range . }}   
-        <li>{{ .LastName }}</li>
+        <li>
+            <h2>{{ .FirstName }}  {{ .LastName }} {{ if .Suffix }}{{ .Suffix }}{{ end }} - {{ .Party }}</h2>
+            <a href="https://twitter.com/{{ .TwitterAccount }}" target="_blank">Twitter Account</a>
+            <a href="{{ .URL }}" target="_blank">Website</a>
+            <p>Total Votes: <span>{{ .TotalVotes }}</span></p>
+            <p>Missed Votes: <span>{{ .MissedVotes }}</span></p>
+            <div class="percentage">
+                <p>Missed Vote %: <span>{{ .MissedVotesPct }}</span></p><div class="meter"></div>
+            </div>
+            <div class="percentage">
+                <p>Votes With Party: <span>{{ .VotesWithPartyPct }}</span></p><div class="meter"></div>
+            </div>
+            <div class="percentage">
+                <p>Votes Against Party: <span>{{ .VotesAgainstPartyPct }}</span></p><div class="meter"></div>
+            </div>
+
+            <a href="{{ .ContactForm }}" target="_blank">Contact {{ .FirstName }} {{ .LastName }}</a>
+        </li>
      {{ end }}
     </ul>
 </body>

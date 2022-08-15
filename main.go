@@ -136,7 +136,7 @@ func home(c *gin.Context) {
 	tmpl.Execute(c.Writer, nil)
 }
 
-func myrepresentatives(c *gin.Context) {
+func myRepresentatives(c *gin.Context) {
 	//Consume from our own API
 	////////////////////////////////////////////////Todo, make this url dynamic
 	res, _ := http.Get("http://localhost:3000/api/members")
@@ -164,8 +164,6 @@ func myrepresentatives(c *gin.Context) {
 			}
 		}
 
-		fmt.Printf("%+v\n", memberMatch)
-
 		tmpl.Execute(c.Writer, memberMatch)
 	}
 
@@ -175,8 +173,9 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/", home)
+	router.Static("/static", "./static")
 	router.GET("/api/members", getMembers)
-	router.POST("/my-representatives", myrepresentatives)
+	router.POST("/my-representatives", myRepresentatives)
 	router.Run(":3000")
 
 }
